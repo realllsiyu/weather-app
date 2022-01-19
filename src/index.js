@@ -31,9 +31,8 @@ dateElement.innerHTML = formatDate(currentTime);
 
 function displayWeather(response) {
   document.querySelector("#city").innerHTML = response.data.name;
-  document.querySelector("#temp").innerHTML = Math.round(
-    response.data.main.temp
-  );
+  var temperatur = document.querySelector("#temp");
+  temperatur.innerHTML = Math.round(response.data.main.temp);
   document.querySelector("#humidity").innerHTML = response.data.main.humidity;
   document.querySelector("#wind").innerHTML = Math.round(
     response.data.wind.speed
@@ -42,16 +41,41 @@ function displayWeather(response) {
     response.data.weather[0].main;
 }
 
-function getCity(city) {
+let unit = "metric";
+let fahrenheit = document.querySelector("#fahrenheit");
+let celsius = document.querySelector("#celsius");
+let km = document.querySelector("#km");
+fahrenheit.style.color = "#3a40f1";
+
+function metricUnit() {
+  unit = "metric";
+  celsius.style.color = "#000000";
+  fahrenheit.style.color = "#3a40f1";
+  km.innerHTML = "km/h";
+  getCityWeather(document.querySelector("#city").innerHTML, unit);
+}
+
+function imperialUnit() {
+  unit = "imperial";
+  fahrenheit.style.color = "#000000";
+  celsius.style.color = "#3a40f1";
+  km.innerHTML = "mph";
+  getCityWeather(document.querySelector("#city").innerHTML, unit);
+}
+
+fahrenheit.addEventListener("click", imperialUnit);
+celsius.addEventListener("click", metricUnit);
+
+function getCityWeather(city, unit) {
   let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${unit}`;
   axios.get(url).then(displayWeather);
 }
 
 function citySubmit(event) {
   event.preventDefault();
   var city = document.querySelector("#city-input").value;
-  getCity(city);
+  getCityWeather(city, unit);
 }
 
 var searchForm = document.querySelector("#search-form");
@@ -61,7 +85,7 @@ function getLocation(position) {
   let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
-  let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+  let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${unit}&appid=${apiKey}`;
   axios.get(url).then(displayWeather);
 }
 
@@ -73,4 +97,4 @@ function getCurrentLocation(event) {
 var currentLocationButton = document.querySelector("#current-input");
 currentLocationButton.addEventListener("click", getCurrentLocation);
 
-getCity("Charlotte");
+getCityWeather("Charlotte", unit);
