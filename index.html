@@ -36,27 +36,35 @@
         </div>
       </form>
 
-      <h1 id="city"></h1>
-      <ul>
-        <li id="date"></li>
-        <li id="description"></li>
-      </ul>
       <div class="row">
         <div class="col-6">
-          <div class="clearfix">
-            <div class="float-left">
-              <span class="temp" id="temp"></span>
-              <span class="units"
-                ><span id="celsius">°C</span> |
-                <span id="fahrenheit">°F</span></span
-              >
-            </div>
+          <h1 id="city"></h1>
+          <ul>
+            <li id="date"></li>
+            <li id="description"></li>
+          </ul>
+        </div>
+        <div class="col-6">
+          <img src="" alt="Clear" id="icon" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="float-left">
+            <span class="temp" id="temp"></span>
+            <span class="units"
+              ><span id="celsius">°C</span> |
+              <span id="fahrenheit">°F</span></span
+            >
           </div>
         </div>
         <div class="col-6">
           <ul>
             <li class="humidity">Humidity: <span id="humidity"></span> %</li>
-            <li>Wind: <span id="wind"></span> <span id="km">km/h</span></li>
+            <li class="wind">
+              Wind: <span id="wind"></span> <span id="km">km/h</span>
+            </li>
           </ul>
         </div>
       </div>

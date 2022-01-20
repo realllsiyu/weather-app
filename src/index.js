@@ -1,3 +1,4 @@
+//display date and time in the fotmat: Monday hh:mm
 function formatDate(date) {
   var hours = date.getHours();
 
@@ -29,18 +30,27 @@ var dateElement = document.querySelector("#date");
 var currentTime = new Date();
 dateElement.innerHTML = formatDate(currentTime);
 
+//display elements in corresponding places
 function displayWeather(response) {
   document.querySelector("#city").innerHTML = response.data.name;
-  var temperatur = document.querySelector("#temp");
-  temperatur.innerHTML = Math.round(response.data.main.temp);
+  document.querySelector("#temp").innerHTML = Math.round(
+    response.data.main.temp
+  );
   document.querySelector("#humidity").innerHTML = response.data.main.humidity;
   document.querySelector("#wind").innerHTML = Math.round(
     response.data.wind.speed
   );
   document.querySelector("#description").innerHTML =
-    response.data.weather[0].main;
+    response.data.weather[0].description;
+  let iconElement = document.querySelector("#icon");
+  iconElement.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+  );
+  iconElement.setAttribute("alt", response.data.weather[0].description);
 }
 
+//unit conversion
 let unit = "metric";
 let fahrenheit = document.querySelector("#fahrenheit");
 let celsius = document.querySelector("#celsius");
@@ -66,6 +76,7 @@ function imperialUnit() {
 fahrenheit.addEventListener("click", imperialUnit);
 celsius.addEventListener("click", metricUnit);
 
+//search for weather at a city
 function getCityWeather(city, unit) {
   let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
   let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${unit}`;
@@ -81,6 +92,7 @@ function citySubmit(event) {
 var searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", citySubmit);
 
+//search for weather at the current location
 function getLocation(position) {
   let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
   let lat = position.coords.latitude;
@@ -97,4 +109,5 @@ function getCurrentLocation(event) {
 var currentLocationButton = document.querySelector("#current-input");
 currentLocationButton.addEventListener("click", getCurrentLocation);
 
+//initial display when first open the page
 getCityWeather("Charlotte", unit);
